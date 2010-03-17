@@ -7,42 +7,42 @@
 #ifndef IGLOO_REGISTRATION_H
 #define IGLOO_REGISTRATION_H
 
-#define IGLOO_RegisterContext(context, baseContext) \
-	template<class Dummy##context> struct context; \
-	struct ContextRegistrar_##context \
-	{ \
-	  ContextRegistrar_##context() \
-	  { \
-		igloo::TestRunner::RegisterContext<igloo::ContextRunner<baseContext, context<void> > >(#context); \
-	  } \
-	} context##_IglooRegistrar;
+#define IGLOO_PRIVATE_GENERATE_CONTEXTREGISTRAR(contextName, baseContextName) \
+  template<class Dummy##contextName> struct contextName; \
+  struct ContextRegistrar_##contextName \
+  { \
+    ContextRegistrar_##contextName() \
+    { \
+      igloo::TestRunner::RegisterContext<igloo::ContextRunner<baseContextName, contextName<void> > >(#contextName); \
+    } \
+  } contextName##_IglooRegistrar;
 
-#define Context(context) \
-	IGLOO_RegisterContext(context, void) \
-	template<class Dummy##context> struct context : public ContextProvider<context<Dummy##context>, IGLOO_CURRENT_CONTEXT>
+#define Context(contextName) \
+  IGLOO_PRIVATE_GENERATE_CONTEXTREGISTRAR(contextName, void) \
+  template<class Dummy##contextName> struct contextName : public ContextProvider<contextName<Dummy##contextName>, IGLOO_CURRENT_CONTEXT>
 
-#define SubContext(context, baseContext) \
-	IGLOO_RegisterContext(context, baseContext) \
-	template<class Dummy##context> struct context : baseContext
+#define SubContext(contextName, baseContextName) \
+  IGLOO_PRIVATE_GENERATE_CONTEXTREGISTRAR(contextName, baseContextName) \
+  template<class Dummy##contextName> struct contextName : baseContextName
 
-#define Spec(spec) \
-	struct SpecRegistrar_##spec \
-	{ \
-	  SpecRegistrar_##spec() \
-	  { \
-	    ContextRegistry<IGLOO_CURRENT_CONTEXT>::RegisterSpec(#spec, &spec); \
-	  } \
-	} SpecRegistrar_##spec; \
-	void spec()
+#define Spec(specName) \
+  struct SpecRegistrar_##specName \
+  { \
+    SpecRegistrar_##specName() \
+    { \
+      ContextRegistry<IGLOO_CURRENT_CONTEXT>::RegisterSpec(#specName, &specName); \
+    } \
+  } SpecRegistrar_##specName; \
+  void specName()
 
 // "Classic" aliases
-#define TestFixture(context) \
-	Context(context)
+#define TestFixture(fixtureName) \
+  Context(fixtureName)
 
-#define DerivedFixture(context, baseContext) \
-	SubContext(context, baseContext)
+#define DerivedFixture(fixtureName, baseFixtureName) \
+  SubContext(fixtureName, baseFixtureName)
 
-#define TestMethod(spec) \
-	Spec(spec)
+#define TestMethod(methodName) \
+  Spec(methodName)
 
 #endif
