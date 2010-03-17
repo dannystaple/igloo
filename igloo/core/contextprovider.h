@@ -7,31 +7,34 @@
 #ifndef IGLOO_CONTEXTPROVIDER_H_
 #define IGLOO_CONTEXTPROVIDER_H_
 
-// Default current context to empty base class
-typedef igloo::ContextBase IGLOO_CURRENT_CONTEXT;
+namespace igloo {
 
-template <typename InnerContext, typename OuterContext>
-struct ContextProvider : public OuterContext
-{
-	typedef InnerContext IGLOO_CURRENT_CONTEXT;
+	// Default current context to empty base class
+	typedef ContextBase IGLOO_CURRENT_CONTEXT;
 
-	virtual void IglooFrameworkSetUp()
+	template <typename InnerContext, typename OuterContext>
+	struct ContextProvider : public OuterContext
 	{
-		OuterContext::IglooFrameworkSetUp();
-		Call(&InnerContext::SetUp);
-	}
+		typedef InnerContext IGLOO_CURRENT_CONTEXT;
 
-	virtual void IglooFrameworkTearDown()
-	{
-		Call(&InnerContext::TearDown);
-		OuterContext::IglooFrameworkTearDown();
-	}
+		virtual void IglooFrameworkSetUp()
+		{
+			OuterContext::IglooFrameworkSetUp();
+			CallDerived(&InnerContext::SetUp);
+		}
 
-private:
-	void Call(void (InnerContext::*Method)())
-	{
-		(static_cast<InnerContext*>(this)->*Method)();
-	}
-};
+		virtual void IglooFrameworkTearDown()
+		{
+			CallDerived(&InnerContext::TearDown);
+			OuterContext::IglooFrameworkTearDown();
+		}
+
+	private:
+		void CallDerived(void (InnerContext::*Method)())
+		{
+			(static_cast<InnerContext*>(this)->*Method)();
+		}
+	};
+}
 
 #endif
