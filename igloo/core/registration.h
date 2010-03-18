@@ -30,7 +30,7 @@
   { \
     SpecRegistrar_##specName() \
     { \
-      ContextRegistry<IGLOO_CURRENT_CONTEXT>::RegisterSpec(#specName, &specName); \
+	ContextRegistry<IGLOO_CURRENT_CONTEXT>::RegisterSpec(#specName, &IGLOO_CURRENT_CONTEXT::specName); \
     } \
   } SpecRegistrar_##specName; \
   void specName()

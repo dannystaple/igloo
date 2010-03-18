@@ -1,3 +1,4 @@
+
 //          Copyright Joakim Karlsson & Kim Gräsman 2010.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -54,17 +55,6 @@ namespace igloo
         std::list<T> >
     {
     };
-
-  template<>
-    struct Stringizer<std::stringstream>
-    {
-      static std::string
-      ToString(const std::stringstream& stm)
-      {
-        return "WTF!?";
-      }
-    };
-
 }
 
 #endif
