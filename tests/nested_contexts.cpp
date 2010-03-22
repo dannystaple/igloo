@@ -43,7 +43,7 @@ Context(AContextWithSetupAndTearDown)
     ContextToTest::InnerContext innerContext;
     ContextRegistry<ContextToTest::InnerContext>::CallSpec(innerContext, "InnerContext", "ASpec", &ContextToTest::InnerContext::ASpec, results);
     
-    Assert::That(innerContext.Parent().log, Equals("SetUp called Inner SetUp called Inner TearDown called TearDown called "));    
+    Assert::That(innerContext.log, Equals("SetUp called Inner SetUp called Inner TearDown called TearDown called "));    
   }
   
   Spec(SetUpAndTearDownAreCalledForFailingSpecs)
@@ -59,7 +59,7 @@ Context(AContextWithSetupAndTearDown)
     ContextToTest::InnerContext innerContext;
     ContextRegistry<ContextToTest::InnerContext>::CallSpec(innerContext, "InnerContext", "AFailingSpec", &ContextToTest::InnerContext::AFailingSpec, results);
     
-    Assert::That(innerContext.Parent().log, Equals("SetUp called Inner SetUp called Inner TearDown called TearDown called "));    
+    Assert::That(innerContext.log, Equals("SetUp called Inner SetUp called Inner TearDown called TearDown called "));    
   } 
   
   struct ContextToTest : public ContextProvider<ContextToTest, ContextBase>
@@ -87,12 +87,12 @@ Context(AContextWithSetupAndTearDown)
     {
       void SetUp()
       {
-        Parent().log += "Inner SetUp called ";
+        log += "Inner SetUp called ";
       }
       
       void TearDown()
       {
-        Parent().log += "Inner TearDown called ";
+        log += "Inner TearDown called ";
       }
       
       Spec(ASpec)

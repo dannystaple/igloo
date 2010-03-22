@@ -23,11 +23,11 @@ namespace igloo {
     virtual void IglooFrameworkTearDown()
     {}
     
-    virtual void SetUp()
+    void SetUp()
     {
     }
 
-    virtual void TearDown()
+    void TearDown()
     {
     }
   };

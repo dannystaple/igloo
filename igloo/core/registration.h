@@ -8,32 +8,32 @@
 #define IGLOO_REGISTRATION_H
 
 #define IGLOO_PRIVATE_GENERATE_CONTEXTREGISTRAR(contextName, baseContextName) \
-  struct contextName; \
+  template<class Dummy##contextName> struct contextName; \
   struct ContextRegistrar_##contextName \
   { \
     ContextRegistrar_##contextName() \
     { \
-      igloo::TestRunner::RegisterContext<igloo::ContextRunner<baseContextName, contextName> >(#contextName); \
+      igloo::TestRunner::RegisterContext<igloo::ContextRunner<baseContextName, contextName<void> > >(#contextName); \
     } \
   } contextName##_IglooRegistrar;
 
 #define IGLOO_CONTEXT_REGISTRATION(contextName) \
-  IGLOO_PRIVATE_GENERATE_CONTEXTREGISTRAR(contextName, void); \
-  struct contextName : public ContextProvider<contextName, IGLOO_CURRENT_CONTEXT>
+  IGLOO_PRIVATE_GENERATE_CONTEXTREGISTRAR(contextName, void) \
+  template<class Dummy##contextName> struct contextName : public ContextProvider<contextName<Dummy##contextName>, IGLOO_CURRENT_CONTEXT>
 
 #define IGLOO_SUBCONTEXT_REGISTRATION(contextName, baseContextName) \
-  IGLOO_PRIVATE_GENERATE_CONTEXTREGISTRAR(contextName, baseContextName); \
-  struct contextName : public baseContextName
+  IGLOO_PRIVATE_GENERATE_CONTEXTREGISTRAR(contextName, baseContextName) \
+  template<class Dummy##contextName> struct contextName : baseContextName
 
 #define IGLOO_SPEC_REGISTRATION(specName) \
   struct SpecRegistrar_##specName \
   { \
     SpecRegistrar_##specName() \
     { \
-	  ContextRegistry<IGLOO_CURRENT_CONTEXT>::RegisterSpec(#specName, &IGLOO_CURRENT_CONTEXT::specName); \
+	ContextRegistry<IGLOO_CURRENT_CONTEXT>::RegisterSpec(#specName, &IGLOO_CURRENT_CONTEXT::specName); \
     } \
   } SpecRegistrar_##specName; \
-  virtual void specName()
+  void specName()
 
 // Default aliases
 #define Context(contextName) \
