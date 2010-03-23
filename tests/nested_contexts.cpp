@@ -64,6 +64,9 @@ Context(AContextWithSetupAndTearDown)
   
   struct ContextToTest : public ContextProvider<ContextToTest, ContextBase>
   {
+    typedef ContextToTest IGLOO_CURRENT_CONTEXT;
+    typedef ContextToTest BaseContext;
+
     void SetUp()
     {
       log = "SetUp called ";

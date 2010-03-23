@@ -10,6 +10,9 @@ using namespace igloo;
 
 struct Common : public ContextProvider<Common, ContextBase>
 {
+  typedef Common IGLOO_CURRENT_CONTEXT;
+  typedef Common BaseContext;
+
   virtual ~Common() {}
   virtual void SetUp() = 0;
   

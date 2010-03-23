@@ -10,12 +10,13 @@
 namespace igloo {
 
 	// Default current context to empty base class
-	typedef ContextBase IGLOO_CURRENT_CONTEXT;
+	
 
 	template <typename InnerContext, typename OuterContext>
 	struct ContextProvider : public OuterContext
 	{
-		typedef InnerContext IGLOO_CURRENT_CONTEXT;
+		//typedef InnerContext IGLOO_CURRENT_CONTEXT;
+            typedef OuterContext ParentContext;
 
 		virtual void IglooFrameworkSetUp()
 		{

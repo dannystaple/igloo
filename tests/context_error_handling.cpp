@@ -20,6 +20,9 @@ Context(AContextWithAFailingSpec)
   
   struct FailingContext : public ContextProvider<FailingContext, ContextBase>
   {
+    typedef FailingContext IGLOO_CURRENT_CONTEXT;
+    typedef FailingContext BaseContext;
+
     Spec(AFailingSpec)
     {
       Assert::Failure("This should fail");
@@ -43,6 +46,9 @@ Context(AContextWithAFailingTearDown)
   
   struct FailingContext : public ContextProvider<FailingContext, ContextBase>
   {
+    typedef FailingContext IGLOO_CURRENT_CONTEXT;
+    typedef FailingContext BaseContext;
+
     void TearDown()
     {
       Assert::Failure("This should fail");

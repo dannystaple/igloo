@@ -15,6 +15,8 @@ namespace igloo {
 
   struct ContextBase 
   {
+    typedef ContextBase ParentContext;
+
     virtual ~ContextBase() {}
     
     virtual void IglooFrameworkSetUp()
