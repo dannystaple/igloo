@@ -15,15 +15,7 @@ namespace igloo {
 
   struct ContextBase 
   {
-    typedef ContextBase ParentContext;
-
     virtual ~ContextBase() {}
-    
-    virtual void IglooFrameworkSetUp()
-    {}
-    
-    virtual void IglooFrameworkTearDown()
-    {}
     
     void SetUp()
     {
@@ -78,9 +70,9 @@ namespace igloo {
       
       try
       {
-        context.IglooFrameworkSetUp();
+        context.IGLOO_OrchestrateSetUp();
         (context.*spec)();
-       }
+      }
       catch (const AssertionException& e)
       {
         results.push_back(TestResult(contextName, specName, false, e.GetMessage()));
@@ -89,7 +81,7 @@ namespace igloo {
       
       try 
       {
-        context.IglooFrameworkTearDown();
+        context.IGLOO_OrchestrateTearDown();
       }
       catch (const AssertionException& e) 
       {

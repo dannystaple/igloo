@@ -9,33 +9,29 @@
 
 namespace igloo {
 
-	// Default current context to empty base class
-	
+  template <typename InnerContext, typename OuterContext>
+  struct ContextProvider : public OuterContext
+  {
+    // Strange names because these end up in every context, so we want to avoid collision with
+    // user-defined spec/method names
+    void IGLOO_OrchestrateSetUp()
+    {
+      OuterContext::SetUp();
+      IGLOO_CallDerived(&InnerContext::SetUp);
+    }
 
-	template <typename InnerContext, typename OuterContext>
-	struct ContextProvider : public OuterContext
-	{
-		//typedef InnerContext IGLOO_CURRENT_CONTEXT;
-            //typedef OuterContext ParentContext;
+    void IGLOO_OrchestrateTearDown()
+    {
+      IGLOO_CallDerived(&InnerContext::TearDown);
+      OuterContext::TearDown();
+    }
 
-		virtual void IglooFrameworkSetUp()
-		{
-			OuterContext::IglooFrameworkSetUp();
-			CallDerived(&InnerContext::SetUp);
-		}
-
-		virtual void IglooFrameworkTearDown()
-		{
-			CallDerived(&InnerContext::TearDown);
-			OuterContext::IglooFrameworkTearDown();
-		}
-
-	private:
-		void CallDerived(void (InnerContext::*Method)())
-		{
-			(static_cast<InnerContext*>(this)->*Method)();
-		}
-	};
+  private:
+    void IGLOO_CallDerived(void (InnerContext::*Method)())
+    {
+      (static_cast<InnerContext*>(this)->*Method)();
+    }
+  };
 }
 
 #endif
