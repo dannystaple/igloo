@@ -7,7 +7,10 @@
 #ifndef IGLOO_REGISTRATION_H
 #define IGLOO_REGISTRATION_H
 
-typedef igloo::ContextBase IGLOO_CURRENT_CONTEXT;
+namespace igloo
+{
+  typedef igloo::ContextBase IGLOO_CURRENT_CONTEXT;
+}
 
 #define IGLOO_PRIVATE_GENERATE_CONTEXTREGISTRAR(contextName, baseContextName) \
   template<class Dummy##contextName> struct contextName; \
