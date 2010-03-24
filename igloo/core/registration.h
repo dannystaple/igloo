@@ -10,7 +10,7 @@
 typedef igloo::ContextBase IGLOO_CURRENT_CONTEXT;
 
 #define IGLOO_PRIVATE_GENERATE_CONTEXTREGISTRAR(contextName, baseContextName) \
-  template<class T> struct contextName; \
+  template<class Dummy##contextName> struct contextName; \
   struct ContextRegistrar_##contextName \
   { \
     ContextRegistrar_##contextName() \
@@ -22,23 +22,23 @@ typedef igloo::ContextBase IGLOO_CURRENT_CONTEXT;
   struct IGLOO_MetaContext_##contextName \
   { \
     typedef contextName<void> IGLOO_CURRENT_CONTEXT; \
-    typedef IGLOO_MetaContext_##contextName BaseContext; \
+    typedef IGLOO_MetaContext_##contextName MetaContext; \
   };
 
 #define IGLOO_CONTEXT_REGISTRATION(contextName) \
   IGLOO_PRIVATE_GENERATE_CONTEXTREGISTRAR(contextName, void) \
-  template<class T> struct contextName : public IGLOO_MetaContext_##contextName, public ContextProvider<contextName<T>, IGLOO_CURRENT_CONTEXT >
+  template<class Dummy##contextName> struct contextName : public IGLOO_MetaContext_##contextName, public ContextProvider<contextName<Dummy##contextName>, IGLOO_CURRENT_CONTEXT >
 
 #define IGLOO_SUBCONTEXT_REGISTRATION(contextName, baseContextName) \
   IGLOO_PRIVATE_GENERATE_CONTEXTREGISTRAR(contextName, baseContextName) \
-  template<class T> struct contextName : baseContextName
+  template<class Dummy##contextName> struct contextName : baseContextName
 
 #define IGLOO_SPEC_REGISTRATION(specName) \
   struct SpecRegistrar_##specName \
   { \
     SpecRegistrar_##specName() \
     { \
-    ContextRegistry<BaseContext::IGLOO_CURRENT_CONTEXT>::RegisterSpec(#specName, &BaseContext::IGLOO_CURRENT_CONTEXT::specName); \
+    ContextRegistry<MetaContext::IGLOO_CURRENT_CONTEXT>::RegisterSpec(#specName, &MetaContext::IGLOO_CURRENT_CONTEXT::specName); \
     } \
   } SpecRegistrar_##specName; \
   void specName()

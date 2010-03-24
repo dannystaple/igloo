@@ -16,7 +16,7 @@ namespace igloo {
 	struct ContextProvider : public OuterContext
 	{
 		//typedef InnerContext IGLOO_CURRENT_CONTEXT;
-            typedef OuterContext ParentContext;
+            //typedef OuterContext ParentContext;
 
 		virtual void IglooFrameworkSetUp()
 		{

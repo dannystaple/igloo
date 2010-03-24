@@ -15,7 +15,7 @@ template <typename T>
 struct SequenceContainerTestsBase : public ContextProvider<SequenceContainerTestsBase<T>, IGLOO_CURRENT_CONTEXT>
 {
    typedef SequenceContainerTestsBase<T> IGLOO_CURRENT_CONTEXT;
-   typedef SequenceContainerTestsBase<T> BaseContext;
+   typedef SequenceContainerTestsBase<T> MetaContext;
   
    void SetUp()
    {

@@ -21,7 +21,7 @@ Context(AContextWithAFailingSpec)
   struct FailingContext : public ContextProvider<FailingContext, ContextBase>
   {
     typedef FailingContext IGLOO_CURRENT_CONTEXT;
-    typedef FailingContext BaseContext;
+    typedef FailingContext MetaContext;
 
     Spec(AFailingSpec)
     {
@@ -47,7 +47,7 @@ Context(AContextWithAFailingTearDown)
   struct FailingContext : public ContextProvider<FailingContext, ContextBase>
   {
     typedef FailingContext IGLOO_CURRENT_CONTEXT;
-    typedef FailingContext BaseContext;
+    typedef FailingContext MetaContext;
 
     void TearDown()
     {
