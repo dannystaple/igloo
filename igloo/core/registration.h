@@ -27,7 +27,9 @@ typedef igloo::ContextBase IGLOO_CURRENT_CONTEXT;
 
 #define IGLOO_CONTEXT_REGISTRATION(contextName) \
   IGLOO_PRIVATE_GENERATE_CONTEXTREGISTRAR(contextName, void) \
-  template<class Dummy##contextName> struct contextName : public IGLOO_MetaContext_##contextName, public ContextProvider<contextName<Dummy##contextName>, IGLOO_CURRENT_CONTEXT >
+  template<class Dummy##contextName> struct contextName \
+    : public IGLOO_MetaContext_##contextName \
+    , public ContextProvider<contextName<Dummy##contextName>, IGLOO_CURRENT_CONTEXT>
 
 #define IGLOO_SUBCONTEXT_REGISTRATION(contextName, baseContextName) \
   IGLOO_PRIVATE_GENERATE_CONTEXTREGISTRAR(contextName, baseContextName) \
